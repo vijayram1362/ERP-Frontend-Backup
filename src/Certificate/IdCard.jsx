@@ -4,7 +4,7 @@ import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 import IdForm from "./IdForm";
 import { useLocation } from "react-router-dom";
-import { baseURL } from "../config/api";
+import { baseURL, uploadCertificate } from "../config/api";
 
 function IdCard() {
   const [formData, setFormData] = useState({
@@ -30,15 +30,15 @@ function IdCard() {
 
   useEffect(() => {
     if (student) {
-      setFormData({
-        ...formData,
+      setFormData((prevData) => ({
+        ...prevData,
         fullName: `${student.firstName} ${student.middleName} ${student.lastName}`,
         fatherName: student.fatherName,
         dob: moment(student.dob).format("DD/MM/YYYY"),
         mobileNo: student.fatherMobileNo,
         studentId: student.id,
         address: student.address.presentAddress,
-      });
+      }));
 
       if (student.photo) {
         const imageUrl = student.photo.startsWith("/")
@@ -75,9 +75,27 @@ function IdCard() {
         const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
 
         pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+
+        const pdfBlob = pdf.output("blob");
+
+        const formData = new FormData();
+        formData.append("file", pdfBlob, "student_id_card_details.pdf");
+        formData.append("certificate_type", "Id Card");
+        formData.append("reason", "Id Card Issue");
+        formData.append("student_id", student.id);
+
+        uploadCertificate({ formData })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("File saved successfully:", data);
+          })
+          .catch((error) => {
+            console.error("Error saving file:", error);
+          });
+
         pdf.save("student_id_card_details.pdf");
       });
-    }, 1000); // Adjust the delay if needed
+    }, 1000);
   };
 
   return (

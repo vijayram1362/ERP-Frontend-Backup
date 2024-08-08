@@ -1,34 +1,67 @@
-
-
-
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { getCertificateSerialNumber } from "../config/api";
 
 function BonfitePreview({ formData }) {
+  const [slNumber, setSlNumber] = useState(null);
+  const getSlNo = async () => {
+    const result = await getCertificateSerialNumber();
+    console.log(result.data);
+    setSlNumber(result.data.certificateId);
+  };
+  useEffect(() => {
+    getSlNo();
+  }, [formData]);
   return (
-    <div id="preview-content" className="font-[roboto] m-12 p-8 text-black bg-white mx-56 py-4 border-black border-[8px] relative">
+    <div
+      id="preview-content"
+      className="font-[roboto] m-12 p-8 text-black bg-white mx-56 py-4 border-black border-[8px] relative"
+    >
       <div className="flex flex-col sm:flex-row py-4 items-center justify-center relative z-10">
         <div className="w-52 h-56 mr-4 ">
-          <img src={formData.logoLeft} alt="School Logo" loading="lazy" title="School Logo" className="object-contain h-full w-full" />
+          <img
+            src={formData.logoLeft}
+            alt="School Logo"
+            loading="lazy"
+            title="School Logo"
+            className="object-contain h-full w-full"
+          />
         </div>
         <div className="text-center mb-12">
-          <h2 className="text-red-700 mb-2 font-bold text-3xl">{formData.schoolName}</h2>
+          <h2 className="text-red-700 mb-2 font-bold text-3xl">
+            {formData.schoolName}
+          </h2>
           <p className="font-semibold">{formData.schoolAddress}</p>
-          <p className="font-semibold">UDISE No.: {formData.udiseNo} Affiliation No.: {formData.affiliationNo} School Code: {formData.schoolCode}</p>
-          <div className='text-center font-semibold '>
-                <a href="http://www.induraenglishschool.in" className='mx-1.5'>Website: www.induraenglishschool.in</a>
-                <a href="mailto:induraenglishschool@gmail.com" className='mx-1.5'>Email: induraenglishschool@gmail.com</a>
-              </div>
+          <p className="font-semibold">
+            UDISE No.: {formData.udiseNo} Affiliation No.:{" "}
+            {formData.affiliationNo} School Code: {formData.schoolCode}
+          </p>
+          <div className="text-center font-semibold ">
+            <a href="http://www.induraenglishschool.in" className="mx-1.5">
+              Website: www.induraenglishschool.in
+            </a>
+            <a href="mailto:induraenglishschool@gmail.com" className="mx-1.5">
+              Email: induraenglishschool@gmail.com
+            </a>
+          </div>
         </div>
         <div className="w-40 h-40 mb-12 ml-12">
-          <img src={formData.logoRight} alt="CBSE Logo" loading="lazy" title="CBSE Logo" className="object-contain h-full w-full" />
+          <img
+            src={formData.logoRight}
+            alt="CBSE Logo"
+            loading="lazy"
+            title="CBSE Logo"
+            className="object-contain h-full w-full"
+          />
         </div>
       </div>
 
       <div>
-        <h2 className="text-center font-semibold text-4xl">BONAFIDE CERTIFICATE</h2>
+        <h2 className="text-center font-semibold text-4xl">
+          BONAFIDE CERTIFICATE
+        </h2>
       </div>
       <div className="flex justify-between items-center m-4 font-semibold">
-        <p>Certificate No.: {formData.certificateNo}</p>
+        <p>Certificate No.: {slNumber}</p>
         <p className="mr-12">Regd. No: {formData.regdNo}</p>
       </div>
       <div className="relative mt-12">
@@ -49,31 +82,57 @@ function BonfitePreview({ formData }) {
           <div className="p-6  bg-opacity-70">
             <p className="m-4 text-center text-lg leading-relaxed tracking-wider">
               <strong>This is to clarify that</strong>
-              <span className="border-b-2 border-black px-2 pb-2">{formData.studentName}</span>
+              <span className="border-b-2 border-black px-2 pb-1">
+                {formData.studentName}
+              </span>
               <strong className="px-2">, is a BONAFIDE</strong>
             </p>
             <p className="m-4 text-center text-lg leading-relaxed tracking-wider">
               student of our school, studying in
-              <span className="border-b-2 border-black px-4 pb-2">{formData.class}</span> Year: 
-              <span className="border-b-2 pb-2 border-black px-4">{formData.Year}</span>.
+              <span className="border-b-2 border-black px-4 pb-1">
+                {formData.class}
+              </span>{" "}
+              Year:
+              <span className="border-b-2 pb-1 border-black px-4">
+                {formData.Year}
+              </span>
+              .
             </p>
             <p className="m-4 text-center text-lg leading-relaxed tracking-wider">
               His/her birthdate as recorded in our General Register is
-              <span className="border-b-2 pb-2 border-black px-4">{formData.dob}</span>
-              (in words: <span className="border-b-2 pb-2 border-black px-4">{formData.birthDateInWords}</span>).
+              <span className="border-b-2 pb-1 border-black px-4">
+                {formData.dob}
+              </span>
+              (in words:{" "}
+              <span className="border-b-2 pb-1 border-black px-4">
+                {formData.birthDateInWords}
+              </span>
+              ).
             </p>
             <p className="m-4 text-center text-lg leading-relaxed tracking-wider">
-              His/her birthplace is <span className="border-b-2 pb-2 border-black px-4">{formData.dobPlace}</span> and belongs
-              to <span className="border-b-2 pb-2 border-black px-4">{formData. caste}</span> caste. 
+              His/her birthplace is{" "}
+              <span className="border-b-2 pb-1 border-black px-4">
+                {formData.dobPlace}
+              </span>{" "}
+              and belongs to{" "}
+              <span className="border-b-2 pb-1 border-black px-4">
+                {formData.caste}
+              </span>{" "}
+              caste.
             </p>
             <p>
-            To the best of my knowledge,
-            he bears a good moral character and has shown good progress.
+              To the best of my knowledge, he bears a good moral character and
+              has shown good progress.
             </p>
           </div>
         </div>
       </div>
-      <p className="mt-4 m-2">Reason: <span className="border-b-2 pb-2 border-black px-4">{formData.reason}</span></p>
+      <p className="mt-4 m-2">
+        Reason:{" "}
+        <span className="border-b-2 pb-1 border-black px-4">
+          {formData.reason}
+        </span>
+      </p>
       <div className="mt-12">
         <h4 className="px-12 mt-6 text-lg font-semibold">PLACE: </h4>
       </div>
@@ -87,15 +146,3 @@ function BonfitePreview({ formData }) {
 }
 
 export default BonfitePreview;
-
-
-
-
-
-
-
-
-
-
-
-

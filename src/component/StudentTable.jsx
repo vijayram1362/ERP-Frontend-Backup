@@ -5,6 +5,7 @@ import logoLeft from "../img/1000077337-removebg-preview.png";
 import logoRight from "../img/cbse-logo-46D5A6B556-seeklogo.com.png";
 
 import { getAllStudents, baseURL } from "../config/api";
+import { Link } from "react-router-dom";
 
 const StudentTable = () => {
   const [students, setStudents] = useState([]);
@@ -81,7 +82,7 @@ const StudentTable = () => {
     (student) =>
       student.id.toString().includes(searchQuery) ||
       student.class.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      student.mobileNo.includes(searchQuery) ||
+      student.fatherMobileNo.includes(searchQuery) ||
       student.emailId.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -135,6 +136,20 @@ const StudentTable = () => {
       {error && (
         <div className="bg-red-100 text-red-800 p-4 mb-4 rounded">{error}</div>
       )}
+      {/* menu */}
+      <div className="flex flex-start gap-3 my-5">
+        <Link to="/new-admission">
+          <button className="bg-blue-500 text-white py-1 px-2 rounded hover:bg-blue-600">
+            New Admission
+          </button>
+        </Link>
+
+        <Link to={"/add-utility"}>
+          <button className="bg-blue-500 text-white py-1 px-2 rounded hover:bg-blue-600">
+            Add Fee
+          </button>
+        </Link>
+      </div>
 
       <div className="mb-4">
         <input
@@ -175,7 +190,7 @@ const StudentTable = () => {
                   </td>
                   <td className="py-2 px-4 border-b">{student.id}</td>
                   <td className="py-2 px-4 border-b">{student.class}</td>
-                  <td className="py-2 px-4 border-b">{student.mobileNo}</td>
+                  <td className="py-2 px-4 border-b">{student.fatherMobileNo}</td>
                   <td className="py-2 px-4 border-b">{student.emailId}</td>
                   <td className="py-2 px-4 border-b">
                     <button

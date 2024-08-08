@@ -11,14 +11,18 @@ import Bonafide from './Certificate/Bonfite';
 import Leaving from './Certificate/Leaving';
 import PaymentDetails from './component/PaymentDetails';
 import LoginForm from './component/LoginForm';
+import StudentForm from './component/StudentForm';
 import Form from './component/Form';
-
+import BulkUpload from './component/BulkUpload';
 const App = () => {
   return (
     <Router>
       <Routes>
-      <Route path="/" element={<LoginForm />} />
-      <Route path="/student-table" element={<StudentTable />} />
+        <Route path="/" element={<LoginForm />} />
+        <Route path="/csvupload" element={<BulkUpload />} />
+        <Route path="/student-table" element={<StudentTable />} />
+        <Route path="/new-admission" element={<StudentForm />} />
+        <Route path="/add-utility" element={<Form />} />
         <Route path="/student-details" element={<StudentDetails />} />
         <Route path="/payment-details" element={<PaymentDetails />} />
         <Route path="/id-card/:id" element={<IdCard />} />

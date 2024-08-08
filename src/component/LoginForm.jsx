@@ -19,7 +19,7 @@ const LoginForm = () => {
     try {
       // const response = await axios.post(`${API_BASE_URL}${AUTH_ENDPOINT}`, { username, password });
       const response = await loginUser({ username, password });
-      console.log(response.data);
+      // console.log(response.data);
       
       if (response.data.accessToken) {
         sessionStorage.setItem('accessToken', response.data.accessToken);

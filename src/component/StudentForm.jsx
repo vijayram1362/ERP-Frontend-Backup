@@ -1,14 +1,11 @@
-
-
-
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Select from "react-select";
 import "tailwindcss/tailwind.css";
-
+import { Link } from "react-router-dom";
 const StudentForm = () => {
   const [formData, setFormData] = useState({
-    photo: "",
+    file: "",
     academic_year: "",
     first_name: "",
     middle_name: "",
@@ -40,14 +37,40 @@ const StudentForm = () => {
     cities: [],
     pincode: "",
     bus_route: "",
-    mobile_no: "",
-    alternate_mobile_no: "",
+    father_mobile_no: "",
+    mother_mobile_no: "",
     email_id: "",
+    utilities: [],
+    adm_date: "",
+    rf_id: "",
+    gr_id: "",
+    school_category: "",
+    roll_no: "",
+    gender: "",
+    caste: "",
+    mother_tongue: "",
+    previous_school: "",
+    relation: "",
+    father_occupation: "",
+    income: "",
+    adm_class: "",
+    last_class: "",
+    student_house: "",
+    left: "",
+    tc_issue_date: "",
+    remarks: "",
     isAddressSame: false,
     showBusRoute: false,
   });
 
   const [imagePreview, setImagePreview] = useState(null);
+  const [selectedIds, setSelectedIds] = useState([]);
+
+  const categories = [
+    { id: 1, name: "category1" },
+    { id: 2, name: "category2" },
+    { id: 3, name: "category3" },
+  ];
 
   const classOptions = [
     "Class 1",
@@ -101,6 +124,8 @@ const StudentForm = () => {
     Object.keys(formData).forEach((key) => {
       formDataToSend.append(key, formData[key]);
     });
+
+    console.log("FormData:", formData);
 
     try {
       const response = await axios.post("/api/student", formDataToSend, {
@@ -181,13 +206,14 @@ const StudentForm = () => {
       city: selectedOption,
     }));
   };
-
-
-
-
-
-
-
+  const handleCheckboxChange = (id) => {
+    setSelectedIds((prevSelectedIds) =>
+      prevSelectedIds.includes(id)
+        ? prevSelectedIds.filter((selectedId) => selectedId !== id)
+        : [...prevSelectedIds, id]
+    );
+  };
+  console.log("Selected Ids: ", selectedIds);
 
   return (
     // <form onSubmit={handleSubmit} className="max-w-3xl mx-auto p-6 bg-[#8614a2] ">
@@ -200,32 +226,37 @@ const StudentForm = () => {
           Student Registration Form
         </h2>
 
-  
-         <div className="flex mt-16 justify-center items-center mb-6">
-      <div className="flex justify-center items-center flex-col">
-        <label className="block text-white font-medium">Photo</label>
-        <input
-          type="file"
-          name="photo"
-          accept="image/*"
-          onChange={handleChange}
-          className="mt-1 block"
-        />
-        <div className="w-32 h-32 mb-12 p-4 mt-6 bg-gray-200 flex justify-center items-center">
-          {imagePreview ? (
-            <img
-              src={imagePreview}
-              alt="Preview"
-              className="object-cover mx-auto w-full h-full"
+        <div className="flex mt-16 justify-center items-center mb-6">
+          <div className="flex justify-center items-center flex-col">
+            <label className="block text-white font-medium">Photo</label>
+            <input
+              type="file"
+              name="file"
+              accept="image/*"
+              onChange={handleChange}
+              className="mt-1 block"
             />
-          ) : (
-            <span className="text-gray-500 text-center">Image Preview</span>
-          )}
+            <div className="w-32 h-32 mb-12 p-4 mt-6 bg-gray-200 flex justify-center items-center">
+              {imagePreview ? (
+                <img
+                  src={imagePreview}
+                  alt="Preview"
+                  className="object-cover mx-auto w-full h-full"
+                />
+              ) : (
+                <span className="text-gray-500 text-center">Image Preview</span>
+              )}
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+        <div>
+          <Link to={"/csvupload"}>
+          <button>Csv Upload</button>
+          </Link>
+        </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 gap-x-36">
+          {/* academic Year */}
           <div>
             <label className="block font-medium text-white">
               Academic Year
@@ -239,6 +270,189 @@ const StudentForm = () => {
               placeholder="Academic Year"
             />
           </div>
+          {/* RF Id */}
+          <div>
+            <label className="block font-medium text-white">RF ID</label>
+            <input
+              type="text"
+              name="rf_id"
+              value={formData.rf_id}
+              onChange={handleChange}
+              className="mt-1 p-2 focus:outline-none rounded-md block w-full"
+              placeholder="RFId"
+            />
+          </div>
+          {/* Roll no */}
+          <div>
+            <label className="block font-medium text-white">Roll No</label>
+            <input
+              type="text"
+              name="roll_no"
+              value={formData.roll_no}
+              onChange={handleChange}
+              className="mt-1 p-2 focus:outline-none rounded-md block w-full"
+              placeholder="Roll No"
+            />
+          </div>
+          {/* Gender*/}
+          <div>
+            <label className="block font-medium text-white">Gender</label>
+            <input
+              type="text"
+              name="gender"
+              value={formData.gender}
+              onChange={handleChange}
+              className="mt-1 p-2 focus:outline-none rounded-md block w-full"
+              placeholder="Male,Female or Other"
+            />
+          </div>
+          {/* Caste */}
+          <div>
+            <label className="block font-medium text-white">Caste</label>
+            <input
+              type="text"
+              name="caste"
+              value={formData.caste}
+              onChange={handleChange}
+              className="mt-1 p-2 focus:outline-none rounded-md block w-full"
+              placeholder="Caste"
+            />
+          </div>
+          {/* mother tongue */}
+          <div>
+            <label className="block font-medium text-white">
+              Mother Tongue
+            </label>
+            <input
+              type="text"
+              name="mother_tongue"
+              value={formData.mother_tongue}
+              onChange={handleChange}
+              className="mt-1 p-2 focus:outline-none rounded-md block w-full"
+              placeholder="Mother Tongue"
+            />
+          </div>
+          {/* previous School */}
+          <div>
+            <label className="block font-medium text-white">
+              Previous School Name
+            </label>
+            <input
+              type="text"
+              name="previous_school"
+              value={formData.previous_school}
+              onChange={handleChange}
+              className="mt-1 p-2 focus:outline-none rounded-md block w-full"
+              placeholder="Previous school"
+            />
+          </div>
+
+          {/* income */}
+          <div>
+            <label className="block font-medium text-white">
+              Income ( yearly )
+            </label>
+            <input
+              type="text"
+              name="income"
+              value={formData.income}
+              onChange={handleChange}
+              className="mt-1 p-2 focus:outline-none rounded-md block w-full"
+              placeholder="Income"
+            />
+          </div>
+          {/* admission class */}
+          <div>
+            <label className="block font-medium text-white">
+              Admission Class
+            </label>
+            <input
+              type="text"
+              name="adm_class"
+              value={formData.adm_class}
+              onChange={handleChange}
+              className="mt-1 p-2 focus:outline-none rounded-md block w-full"
+              placeholder="Admission Class"
+            />
+          </div>
+          {/* last class */}
+          <div>
+            <label className="block font-medium text-white">Last Class</label>
+            <input
+              type="text"
+              name="last_class"
+              value={formData.last_class}
+              onChange={handleChange}
+              className="mt-1 p-2 focus:outline-none rounded-md block w-full"
+              placeholder="Last class"
+            />
+          </div>
+          {/* student house */}
+          <div>
+            <label className="block font-medium text-white">
+              Student House
+            </label>
+            <input
+              type="text"
+              name="student_house"
+              value={formData.student_house}
+              onChange={handleChange}
+              className="mt-1 p-2 focus:outline-none rounded-md block w-full"
+              placeholder="Student House"
+            />
+          </div>
+          {/* Left */}
+          <div>
+            <label className="block font-medium text-white">Left</label>
+            <input
+              type="text"
+              name="left"
+              value={formData.left}
+              onChange={handleChange}
+              className="mt-1 p-2 focus:outline-none rounded-md block w-full"
+              placeholder="Yes or No"
+            />
+          </div>
+          {/* TC issue Date */}
+          <div>
+            <label className="block font-medium text-white">
+              TC Issue Date
+            </label>
+            <input
+              type="date"
+              name="tc_issue_date"
+              value={formData.tc_issue_date}
+              onChange={handleChange}
+              className="mt-1  p-2 focus:outline-none rounded-md block w-full"
+            />
+          </div>
+          {/* remarks */}
+          <div>
+            <label className="block font-medium text-white">Remarks</label>
+            <input
+              type="text"
+              name="remarks"
+              value={formData.remarks}
+              onChange={handleChange}
+              className="mt-1 p-2 focus:outline-none rounded-md block w-full"
+              placeholder="Remarks"
+            />
+          </div>
+          {/* school category */}
+          <div>
+            <label className="block font-medium text-white">
+              School Category
+            </label>
+            <input
+              type="text"
+              name="school_category"
+              value={formData.school_category}
+              onChange={handleChange}
+              className="mt-1 p-2 focus:outline-none rounded-md block w-full"
+              placeholder="CBSE or PRE Or SEMI"
+            />
+          </div>
+          {/*  first name*/}
           <div>
             <label className="block font-medium text-white">First Name</label>
             <input
@@ -284,6 +498,7 @@ const StudentForm = () => {
                 New
               </option>
               <option value="old">Old</option>
+              <option value="semi">Semi</option>
             </select>
           </div>
           <div>
@@ -310,6 +525,29 @@ const StudentForm = () => {
               onChange={handleChange}
               className="mt-1 p-2 focus:outline-none rounded-md block w-full"
               placeholder="Division"
+            />
+          </div>
+          <div>
+            <label className="block font-medium text-white">
+              Admission Date
+            </label>
+            <input
+              type="date"
+              name="adm_date"
+              value={formData.adm_date}
+              onChange={handleChange}
+              className="mt-1  p-2 focus:outline-none rounded-md block w-full"
+            />
+          </div>
+          <div>
+            <label className="block font-medium text-white">GR ID</label>
+            <input
+              type="text"
+              name="gr_id"
+              value={formData.gr_id}
+              onChange={handleChange}
+              className="mt-1 p-2 focus:outline-none rounded-md block w-full"
+              placeholder="GR ID"
             />
           </div>
           <div>
@@ -429,6 +667,32 @@ const StudentForm = () => {
               placeholder="Guardian's Name"
             />
           </div>
+          {/* relation */}
+          <div>
+            <label className="block font-medium text-white">Relation</label>
+            <input
+              type="text"
+              name="relation"
+              value={formData.relation}
+              onChange={handleChange}
+              className="mt-1 p-2 focus:outline-none rounded-md block w-full"
+              placeholder="Relation"
+            />
+          </div>
+          {/* father occupation */}
+          <div>
+            <label className="block font-medium text-white">
+              Father Occupation
+            </label>
+            <input
+              type="text"
+              name="father_occupation"
+              value={formData.father_occupation}
+              onChange={handleChange}
+              className="mt-1 p-2 focus:outline-none rounded-md block w-full"
+              placeholder="Father Occupation"
+            />
+          </div>
           <div>
             <label className="block font-medium text-white">Religion</label>
             <input
@@ -503,7 +767,7 @@ const StudentForm = () => {
               placeholder="Taluka"
             />
           </div>
-       
+
           <div>
             <label className="block font-medium text-white">Country</label>
             <Select
@@ -544,7 +808,7 @@ const StudentForm = () => {
               placeholder="District"
             />
           </div>
-          
+
           <div>
             <label className="block font-medium text-white">Pincode</label>
             <input
@@ -556,7 +820,7 @@ const StudentForm = () => {
               placeholder="Pincode"
             />
           </div>
-         
+
           <div>
             <label className="block font-medium text-white">Bus Route</label>
             <input
@@ -572,8 +836,8 @@ const StudentForm = () => {
             <label className="block font-medium text-white">Mobile No</label>
             <input
               type="text"
-              name="mobile_no"
-              value={formData.mobile_no}
+              name="father_mobile_no"
+              value={formData.father_mobile_no}
               onChange={handleChange}
               className="mt-1 block w-full p-2 focus:outline-none rounded-md"
               placeholder="Mobile No"
@@ -586,8 +850,8 @@ const StudentForm = () => {
             </label>
             <input
               type="text"
-              name="alternate_mobile_no"
-              value={formData.alternate_mobile_no}
+              name="mother_mobile_no"
+              value={formData.mother_mobile_no}
               onChange={handleChange}
               className="mt-1 p-2 focus:outline-none rounded-md block w-full"
               placeholder="Alternate Mobile No"
@@ -604,6 +868,72 @@ const StudentForm = () => {
               className="mt-1 block w-full p-2 focus:outline-none rounded-md"
               placeholder="Email ID"
             />
+          </div>
+
+          {/* <div className="flex gap-3">
+            {categories.map((category, index) => (
+              <div key={index}>
+                <input
+                  type="checkbox"
+                  className="p-5"
+                  id={`category-${category.id}-${index}`}
+                  name={`category-${category.id}-${index}`}
+                  value={category.id}
+                  onChange={() => handleCheckboxChange(category.id)}
+                />
+                <label
+                  htmlFor={`category-${category.id}-${index}`}
+                  className=" font-medium text-white "
+                >
+                  {category.name}
+                </label>
+              </div>
+            ))}
+          </div> */}
+
+          <div>
+            {categories.map((category, index) => (
+              <div className="inline-flex items-center" key={index}>
+                <label
+                  className="relative flex items-center p-3 rounded-full cursor-pointer"
+                  htmlFor={`check-${category.id}`}
+                >
+                  <input
+                    type="checkbox"
+                    className="before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:before:opacity-10"
+                    id={`check-${category.id}`}
+                    value={category.id}
+                    onChange={() => handleCheckboxChange(category.id)}
+                  />
+                  <span className="absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-3.5 w-3.5"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      stroke="currentColor"
+                      strokeWidth="1"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                        clipRule="evenodd"
+                      ></path>
+                    </svg>
+                  </span>
+                </label>
+                <label
+                  className="mt-px font-light text-white cursor-pointer select-none"
+                  htmlFor={`check-${category.id}`}
+                >
+                  {category.name}
+                </label>
+              </div>
+            ))}
+            {/* <div>
+              <h3>Selected IDs:</h3>
+              <p>{JSON.stringify(selectedIds)}</p>
+            </div> */}
           </div>
         </div>
 

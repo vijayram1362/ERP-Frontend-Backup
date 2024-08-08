@@ -39,5 +39,20 @@ export const baseURL = api.defaults.baseURL;
 export const loginUser = async (userData) => api.post('/api/auth/login', userData);
 // get all students
 export const getAllStudents = async () => api.get('/allstudents');
+// search students
+export const getStudentSearch = async () => api.get('/search');
 // export feedetails of student
-export const getStudentFeeDetails = async (student_id) => api.post('/feedetails', {student_id:100});
+export const getStudentFeeDetails = async (student_id) => api.get('/feedetails', {
+  params: { student_id }
+});
+// export feedetails of student utilitywise
+export const getFeeDetailUtilityWise = async (student_id) => api.get('/feeutilitywise', {
+  params: { student_id }
+});
+// add utility
+export const addUtility = async (utilityData) => api.post('/addutility', utilityData);
+// get certificate serial number
+export const getCertificateSerialNumber = async() => api.get('/certificate-id');
+// upload certificate
+export const uploadCertificate = async(certificateData) => api.post('/certificate-upload',certificateData);
+export const updateStudentFees = async(paymentData) => api.put('/updatefee', paymentData);
